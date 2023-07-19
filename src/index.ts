@@ -16,8 +16,8 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3333
 
 app.get('/', async (request, response) => {
   const db = await openDb()
-  const categoriasDb = await db.all('select * from categorias;')
-  const vagas = await db.all('select * from vagas;')
+  const categoriasDb = await db.all('select * from categorias')
+  const vagas = await db.all('select * from vagas')
   const categorias = categoriasDb.map(categoria => {
     return {
       ...categoria,
@@ -49,10 +49,24 @@ app.get('/admin/vagas', async (request, response) => {
   })
 })
 
+app.get('/admin/categorias', async (request, response) => {
+  const database = await openDb()
+  const categorias = await database.all('select * from categorias')
+  response.render('admin/categorias', {
+    categorias
+  })
+})
+
 app.get('/admin/vagas/delete/:id', async (request, response) => {
   const db = await openDb()
   await db.run('delete from vagas where id = ' + request.params.id + '')
   response.redirect('/admin/vagas')
+})
+
+app.get('/admin/categorias/delete/:id', async (request, response) => {
+  const database = await openDb()
+  await database.run('delete from categorias where id = ' + request.params.id + '')
+  response.redirect('/admin/categorias')
 })
 
 app.get('/admin/vagas/nova', async (request, response) => {
@@ -63,6 +77,11 @@ app.get('/admin/vagas/nova', async (request, response) => {
   response.render('admin/nova-vaga', {categorias})
 })
 
+app.get('/admin/categorias/nova', async (request, response) => {
+  //const database = await openDb()
+  response.render('admin/nova-categoria')
+})
+
 app.post('/admin/vagas/nova', async (request, response) => {
   const {titulo, descricao, categoria_id} = request.body
   const db = await openDb()
@@ -70,11 +89,24 @@ app.post('/admin/vagas/nova', async (request, response) => {
   return response.redirect('/admin/vagas')
 })
 
+app.post('/admin/categorias/nova', async (request, response) => {
+  const database = await openDb()
+  const {name} = request.body
+  await database.exec(`insert into categorias(name) values('${name}')`)
+  response.redirect('/admin/categorias')
+})
+
 app.get('/admin/vagas/editar/:id', async (request, response) => {
   const db = await openDb()
   const categorias = await db.all('select * from categorias')
-  const vaga = await db.get('select * from vagas where id = '+request.params.id)
+  const vaga = await db.get('select * from vagas where id = ' + request.params.id)
   response.render('admin/editar-vaga', {categorias, vaga})
+})
+
+app.get('/admin/categorias/editar/:id', async (request, response) => {
+  const database = await openDb()
+  const categoria = await database.get('select * from categorias where id = ' + request.params.id)
+  response.render('admin/editar-categoria', {categoria})
 })
 
 app.post('/admin/vagas/editar/:id', async (request, response) => {
@@ -83,6 +115,13 @@ app.post('/admin/vagas/editar/:id', async (request, response) => {
   const db = await openDb()
   await db.run(`update vagas set categoria_id = ${categoria_id}, titulo = '${titulo}', descricao = '${descricao}' where id = ${id}`)
   response.redirect('/admin/vagas')
+})
+
+app.post('/admin/categorias/editar/:id', async (request, response) => {
+  const {name} = request.body
+  const database = await openDb()
+  await database.run(`update categorias set name = '${name}' where id = ${request.params.id}`)
+  response.redirect('/admin/categorias')
 })
 
 openDb().then(db => {
