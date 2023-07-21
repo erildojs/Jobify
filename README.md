@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <video src=".github/git.webm" width="320" height="240"></video>
+  <video src=".github/git.webm"/>
 </p>
 
 ## 💻 Projecto
