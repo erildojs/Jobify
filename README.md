@@ -2,9 +2,9 @@
   <img alt="JOBIFY" src=".github/logo.png"/>
 </p>
 
-<p align="center">
+<a align="center">
   <video source=".github/git.mp4"/>
-</p>
+</a>
 
 ## 💻 Projecto
 
