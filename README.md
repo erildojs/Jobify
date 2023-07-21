@@ -2,6 +2,10 @@
   <img alt="JOBIFY" src=".github/logo.png"/>
 </p>
 
+<p align="center">
+  <img alt="JOBIFY" src=".github/jobify.gif"/>
+</p>
+
 ## 💻 Projecto
 
 Encontre emprego para desenvolvedores Web...
