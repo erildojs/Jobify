@@ -3,7 +3,7 @@
 </p>
 
 <a align="center">
-  <video source=".github/git.mp4"/>
+  <video source=".github/git.mp4"></video>
 </a>
 
 ## 💻 Projecto
