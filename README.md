@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img alt="JOBIFY" src=".github/jobify.gif"/>
+  <video src=".github/jobify.webm"/>
 </p>
 
 ## 💻 Projecto
