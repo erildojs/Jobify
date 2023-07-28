@@ -21,7 +21,7 @@ app.get('/', async (request, response) => {
   const categorias = categoriasDb.map(categoria => {
     return {
       ...categoria,
-      vagas: vagas.filter(vaga => vaga.categoria_id === categoria.id)
+      vagas: vagas.filter(vaga => vaga.categoria === categoria.id)
     }
   })
   response.render('home', {
@@ -70,22 +70,19 @@ app.get('/admin/categorias/delete/:id', async (request, response) => {
 })
 
 app.get('/admin/vagas/nova', async (request, response) => {
-  //const db = await openDb()
   const db = await openDb()
-  //await db.run('delete from vagas where id = ' + request.params.id + '')
   const categorias = await db.all('select * from categorias')
   response.render('admin/nova-vaga', {categorias})
 })
 
 app.get('/admin/categorias/nova', async (request, response) => {
-  //const database = await openDb()
   response.render('admin/nova-categoria')
 })
 
 app.post('/admin/vagas/nova', async (request, response) => {
-  const {titulo, descricao, categoria_id} = request.body
+  const {titulo, descricao, categoria} = request.body
   const db = await openDb()
-  await db.exec(`insert into vagas(categoria_id, titulo, descricao) values("${categoria_id}", "${titulo}", "${descricao}")`)
+  await db.exec(`insert into vagas(categoria, titulo, descricao) values(${categoria}, "${titulo}", "${descricao}")`)
   return response.redirect('/admin/vagas')
 })
 
@@ -110,10 +107,10 @@ app.get('/admin/categorias/editar/:id', async (request, response) => {
 })
 
 app.post('/admin/vagas/editar/:id', async (request, response) => {
-  const {titulo, descricao, categoria_id} = request.body
+  const {titulo, descricao, categoria} = request.body
   const {id} = request.params
   const db = await openDb()
-  await db.run(`update vagas set categoria_id = ${categoria_id}, titulo = '${titulo}', descricao = '${descricao}' where id = ${id}`)
+  await db.run(`update vagas set categoria = ${categoria}, titulo = '${titulo}', descricao = '${descricao}' where id = ${id}`)
   response.redirect('/admin/vagas')
 })
 
@@ -126,15 +123,7 @@ app.post('/admin/categorias/editar/:id', async (request, response) => {
 
 openDb().then(db => {
   db.exec('create table if not exists categorias (id INTEGER PRIMARY KEY, name TEXT);')
-  db.exec('create table if not exists vagas (id INTEGER PRIMARY KEY, categoria_id INTEGER, titulo TEXT, descricao TEXT);')
-  //const category = 'Marketing Team'
-  //const category = 'Remote Developer'
-  //const vaga = 'Marketing Digital (San Francisco)'
-  //const vaga = 'Fullstack Developer (Remote)'
-  //const descricao = 'Vaga para marketing digital que fez o fullstack lab'
-  //const descricao = 'Vaga para fullstack developer que fez o fullstack lab'
-  //db.exec(`insert into categorias(name) values("${category}");`)
-  //db.exec(`insert into vagas(categoria_id, titulo, descricao) values(2, "${vaga}", "${descricao}");`)
+  db.exec('create table if not exists vagas (id INTEGER PRIMARY KEY, categoria INTEGER, titulo TEXT, descricao TEXT);')
 })
 
 app.listen(port, ()=> {
