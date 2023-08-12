@@ -10,6 +10,12 @@
 
 Encontre emprego para desenvolvedores Web...
 
+<p>
+  <video width="320" height="240" controls>
+    <source src=".github/video.mp4" type="video/mp4"/>
+  </video>
+</p>
+
 ## Tecnologias
 
 - [NodeJS](https://nodejs.org/en)
