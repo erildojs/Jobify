@@ -7,7 +7,7 @@
     "node": "18"
   },
   "scripts": {
-    "start": "node build/index.js",
+    "start": "node build/src/index.js",
     "dev": "tsnd src/index.ts",
     "build": "tsc"
   },
